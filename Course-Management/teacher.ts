@@ -1,22 +1,20 @@
-class teacher{
-    public name:string;
-    public id:number;
-    public courseName:string[];
-    public course:string;
+import Student from './student';
 
-    constructor(name:string, id:number, course:string) 
-    {
-        this.name=name;
-        this.id=id;
-        // this.courseName=courseName;
-        this.addCourse(course);
-    }
-    addCourse(course:string):void{
-        this.courseName.push(course);
-    }
+class Teacher {
+  private name: string;
 
-    print():void{
-        console.log()
-    }
+  constructor(name: string) {
+    this.name = name;
+  }
 
+  addCourse(course: string) {
+    console.log(`${this.name} added course: ${course}`);
+  }
+
+  seeStudentInfo(student: Student) {
+    console.log(`Student: ${student}`);
+    console.log(`Enrolled Courses: ${student.enrolledCourses}`);
+  }
 }
+
+export default Teacher;
