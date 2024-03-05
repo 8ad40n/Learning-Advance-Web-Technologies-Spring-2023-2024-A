@@ -3,31 +3,35 @@ import {
   Controller,
   Get,
   Param,
-  ParseIntPipe,
   Patch,
   Post,
+  ParseIntPipe,
   ValidationPipe,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UsersGuard } from './users.guard';
+import { MyInterceptor } from './users.interceptor';
 
 @Controller('users')
+@UseInterceptors(MyInterceptor)
+@UseGuards(UsersGuard)
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
   @Get()
   getAll() {
-    console.log("Middleware from getAll function");
     return this.userService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
-    console.log("Middleware from findOne function");
     return this.userService.findById(id);
   }
 
-  @Post()
+  @Post('create')
   createUser(@Body(ValidationPipe) createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
