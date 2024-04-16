@@ -7,6 +7,7 @@ function Skill() {
       <div className="component">
       <h2>SKILLS:</h2>
       <p>{skill}</p>
+
       </div>
       </>
     )
