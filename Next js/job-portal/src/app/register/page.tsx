@@ -1,6 +1,14 @@
+'use client'
 import Nav from "@/components/nav";
-
+import { useRouter } from "next/navigation";
 const RegisterPage = () => {
+
+    const router = useRouter();
+    const newEmployee = () => {
+        router.push("/");
+
+    };
+
 
   return (
     <div>
@@ -28,7 +36,7 @@ const RegisterPage = () => {
           <label>Password:</label>
           <input type="password" />
         </div>
-        <button type="submit">Register</button>
+        <button onClick={newEmployee}>Register</button>
       </form>
     </div>
   );
