@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 const RegisterPage = () => {
 
     const router = useRouter();
-    const newEmployee = () => {
+    const nevigateToHome = () => {
         router.push("/");
 
     };
@@ -36,7 +36,7 @@ const RegisterPage = () => {
           <label>Password:</label>
           <input type="password" />
         </div>
-        <button onClick={newEmployee}>Register</button>
+        <button onClick={nevigateToHome}>Register</button>
       </form>
     </div>
   );
