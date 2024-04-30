@@ -1,3 +1,4 @@
+"use client"
 import axios from 'axios';
 import router from 'next/router';
 import { ChangeEvent, FormEvent, useState } from 'react';
