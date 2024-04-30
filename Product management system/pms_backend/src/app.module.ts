@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { ProductModule } from './product/product.module';
 
+
 @Module({
   imports: [TypeOrmModule.forRoot(config), AuthModule, ProductModule],
   controllers: [AppController],
