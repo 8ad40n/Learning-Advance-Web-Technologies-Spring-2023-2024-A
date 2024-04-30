@@ -13,7 +13,7 @@ export class ProductService {
     private readonly productRepository: Repository<Product>,
   ) {}
 
-  async create(productDto: ProductDto): Promise<Product> {
+  async create(productDto: any): Promise<Product> {
     const product = new Product();
     product.name = productDto.name;
     product.description = productDto.description;

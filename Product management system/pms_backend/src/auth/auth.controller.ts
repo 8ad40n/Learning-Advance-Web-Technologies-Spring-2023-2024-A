@@ -1,10 +1,10 @@
-import { BadRequestException, Body, Controller, Post, Req, Res, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Post, Req, Res, UseGuards, ValidationPipe } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
-
+import { JwtAuthGuard } from './guards/jwt.guard';
 
 
 @Controller('auth')
@@ -20,33 +20,62 @@ export class AuthController {
         return this.authService.register(createUserDto);
     }
 
-    //@UseGuards(LocalGuard)
+    // @UseGuards(LocalGuard)
+    // @Public()
     @Post('login')
     async login(
-    @Body('email') email: string,
-    @Body('password') password: string,
-    @Res({ passthrough: true }) response: Response, @Req() req: Request
+        @Body('email') email: string,
+        @Body('password') password: string,
+        @Res({passthrough: true}) response: Response, @Req() req: Request
     ) {
-    const user = await this.authService.findEmail(email);
+        const user = await this.authService.findOne(email);
 
-    if (!user) {
-        throw new BadRequestException('Invalid credentials');
+        if (!user) {
+            throw new BadRequestException('invalid credentials');
+        }
+
+        if (!await bcrypt.compare(password, user.password)) {
+            throw new BadRequestException('invalid credentials');
+        }
+        const payload ={
+            id: user.id,
+            roles: [user.type]
+        }
+        const jwt= await this.jwtService.signAsync(payload);
+
+
+        // response.cookie("jwt", jwt, {httpOnly: true})
+
+        return {jwt:jwt};
+        
+
+        // return "Success";
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-        throw new BadRequestException('Invalid credentials');
+
+
+    @UseGuards(JwtAuthGuard)
+    @Get("user")
+    async user(@Req() req)
+    {   
+        // try {
+        //     const cookie = request.cookies['jwt'];
+
+        //     const data = await this.jwtService.verifyAsync(cookie);
+
+        //     if (!data) {
+        //         throw new UnauthorizedException();
+        //     }
+
+        //     const user = await this.authService.findById(data['id']);
+
+
+        //     return user;
+        // } catch (e) {
+        //     throw new UnauthorizedException();
+        // }
+        return req.user;
     }
-
-    const jwt = await this.jwtService.signAsync({ id: user.id });
-
-    response.cookie("jwt", jwt, { httpOnly: true });
-
-    return { message: 'Login successful', jwt };
-}
-
-
-
 
     @Post('logout')
     async logout(@Res({passthrough: true}) response: Response) {

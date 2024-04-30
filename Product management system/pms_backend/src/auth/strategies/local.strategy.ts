@@ -15,4 +15,9 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   //   if (!user) throw new UnauthorizedException();
   //   return user;
   // }
+  validate(payload: any) {
+    console.log('Inside JWT Strategy Validate');
+    console.log(payload);
+    return payload;
+  }
 }

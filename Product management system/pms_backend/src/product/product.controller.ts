@@ -4,15 +4,16 @@ import { Product } from 'src/entity/product.entity';
 import { ProductDto } from './dto/product.dto';
 import { ProductService } from './product.service';
 
-@Controller('admin/products')
+@Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @Post()
+  @Post("add")
   async create(@Body() productDto: ProductDto): Promise<Product> {
     return this.productService.create(productDto);
   }
 
+  
   @Put(':id')
   async update(@Param('id', ParseIntPipe) id: number, @Body() productDto: ProductDto): Promise<Product> {
     return this.productService.update(id, productDto);
