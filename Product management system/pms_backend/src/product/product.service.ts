@@ -40,4 +40,7 @@ export class ProductService {
   async findById(id: number): Promise<Product> {
     return this.productRepository.findOne({where:{id}});
   }
+  async getAllProducts(): Promise<Product[]> {
+    return this.productRepository.find();
+  }
 }

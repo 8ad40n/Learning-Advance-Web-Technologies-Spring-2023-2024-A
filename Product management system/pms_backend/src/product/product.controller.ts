@@ -33,4 +33,9 @@ export class ProductController {
   async findById(@Param('id', ParseIntPipe) id: number): Promise<Product> {
     return this.productService.findById(id);
   }
+
+  @Get("list")
+  async getAllProducts() {
+    return this.productService.getAllProducts();
+  }
 }

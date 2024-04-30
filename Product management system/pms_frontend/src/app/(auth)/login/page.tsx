@@ -1,96 +1,52 @@
-'use client'
- 
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { ChangeEvent, SyntheticEvent, useState } from "react";
- 
+import axios from 'axios';
+import router from 'next/router';
+import { ChangeEvent, FormEvent, useState } from 'react';
+
 const Login = () => {
-  const router = useRouter();
- 
-  const newAccount = () => {
-    router.push("/register");
-    //router.back();
-    //router.forward();
-   
- 
-}
- 
-const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
- 
-  const handleChangeUsername = (e : ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
+
+  const handleChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
   };
- 
-  const handleChangePassword = (e : ChangeEvent<HTMLInputElement>) => {
+
+  const handleChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
- 
- 
-const handleSubmit = (e : SyntheticEvent) => {
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!username || !password )
-       {
-      console.log(username, password);
-      setError('All fields are required');
-    }
-   
-    else {
-     
+
     try {
-      postData()
-      setError("product created successfully");
+      const response = await axios.post('http://localhost:8000/auth/login', { email, password });
+      const { jwt } = response.data;
+      
+      localStorage.setItem('token', jwt);
+      
+      router.push('/');
+    } catch (error) {
+      setError('Invalid email or password');
     }
-    catch (e : any) {
-      setError(e);
-    }
-      setUsername('');
-      setPassword('');
-     
-      setError('');
-    }
- 
   };
-  async function postData() {
-   try {
-    const jsonData = {
-      username:username,
-      password: password,
-     
-    }
-    const response = await axios.post('http://localhost:8000/auth/login', jsonData);
-   
-     const data = response.data;
-     console.log(data);
-     } catch (error) {
-     console.error(error);
-     }
-    }
+
   return (
     <div>
-   
-      <h1>Login Page</h1>
-      <form >
+      <h2>Login</h2>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <form onSubmit={handleSubmit}>
         <div>
-          <label>Name: </label>
-          <input type="text" name="username" value={username} onChange={handleChangeUsername} />
+          <label>Email:</label>
+          <input type="email" value={email} onChange={handleChangeEmail} required />
         </div>
-        <br/><br/>
         <div>
-          <label>Email: </label>
-          <input type="password" name="password" value={password} onChange={handleChangePassword} />
+          <label>Password:</label>
+          <input type="password" value={password} onChange={handleChangePassword} required />
         </div>
-        <br/><br/>
-       
-        {error && <p>{error}</p>}
         <button type="submit">Login</button>
       </form>
-      <p>Create New account? </p>
-      <button onClick={newAccount}>Click Here</button>
     </div>
-  )
-}
- 
+  );
+};
+
 export default Login;
- 

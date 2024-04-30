@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios'; // Import AxiosError for better typing
+import axios, { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 
 interface Product {
@@ -9,14 +9,13 @@ interface Product {
 
 interface ErrorResponse {
   message: string;
-  // Add any other properties your error response might have
 }
 
 const UpdateProduct = ({ productId }: { productId: string }) => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
-  const [error, setError] = useState<string>(''); // Explicitly type error as string
+  const [error, setError] = useState<string>(''); 
   const [successMessage, setSuccessMessage] = useState<string>('');
 
   useEffect(() => {
@@ -25,7 +24,7 @@ const UpdateProduct = ({ productId }: { productId: string }) => {
         const response = await axios.get<Product>(`http://localhost:8000/products/${productId}`);
         const { name, price, description } = response.data;
         setName(name);
-        setPrice(price.toString()); // Convert price to string for input field
+        setPrice(price.toString()); 
         setDescription(description);
       } catch (error) {
         if (axios.isAxiosError(error)) {
