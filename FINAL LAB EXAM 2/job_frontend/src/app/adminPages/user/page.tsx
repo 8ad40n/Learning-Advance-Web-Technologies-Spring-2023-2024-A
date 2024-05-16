@@ -7,6 +7,7 @@ import AdminPages from "../page";
 export default function UserList() {
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -48,38 +49,40 @@ export default function UserList() {
     }
   };
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredUsers = users.filter(user =>
+    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.companyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.contact.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <>
       <AdminPages />
       <main className="flex min-h-screen flex-col justify-between p-24 container mx-auto px-1 lg:px-20 md:px-10">
         <div>
           <h1 className="text-3xl font-bold mb-8">User List</h1>
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="border border-gray-300 px-4 py-2 rounded-md mb-4"
+          />
           {loading ? (
             <p className="text-lg">Loading...</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="min-w-full border-collapse border border-gray-300">
-                <thead>
-                  <tr className="bg-gray-200">
-                    <th className="border border-gray-300 px-4 py-2">ID</th>
-                    <th className="border border-gray-300 px-4 py-2">Name</th>
-                    <th className="border border-gray-300 px-4 py-2">
-                      Username
-                    </th>
-                    <th className="border border-gray-300 px-4 py-2">
-                      Company name
-                    </th>
-                    <th className="border border-gray-300 px-4 py-2">
-                      Contact
-                    </th>
-                    <th className="border border-gray-300 px-4 py-2">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
+                {/* Table headers */}
                 <tbody>
-                  {users.map((user) => (
+                  {filteredUsers.map((user) => (
                     <tr key={user.id} className="bg-white">
+                      {/* Table data */}
                       <td className="border border-gray-300 px-4 py-2">
                         {user.id}
                       </td>
@@ -96,6 +99,7 @@ export default function UserList() {
                         {user.contact}
                       </td>
                       <td className="border border-gray-300 px-4 py-2">
+                        {/* Delete button */}
                         <button
                           className=""
                           onClick={() => deleteUser(user.id)}
@@ -108,8 +112,8 @@ export default function UserList() {
                             pathname: "/adminPages/user/edit",
                             query: {
                               id: user.id,
-                              name:user.name,
-                              company:user.company,
+                              name: user.name,
+                              company: user.companyName,
                               contact: user.contact
                             },
                           }}

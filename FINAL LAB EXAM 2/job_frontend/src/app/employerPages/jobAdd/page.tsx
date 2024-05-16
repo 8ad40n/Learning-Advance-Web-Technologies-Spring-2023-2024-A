@@ -6,11 +6,10 @@ import EmployerPages from "../page";
 export default function JobAdd() {
   const [alertMessage, setAlertMessage] = useState("");
   const [jobData, setJobData] = useState({
+    companyName: "",
     title: "",
-    description: "",
-    budget: "",
-    duration: "",
-    skills: [],
+    location: "",
+    salary: "",
   });
 
   const handleChange = (e: any) => {
@@ -57,6 +56,16 @@ export default function JobAdd() {
           <input
             className="w-1/2 rounded-xl px-5 py-2 mb-8"
             type="text"
+            name="companyName"
+            value={jobData.companyName}
+            onChange={handleChange}
+            placeholder="Title"
+            required
+          />{" "}
+          <br />
+          <input
+            className="w-1/2 rounded-xl px-5 py-2 mb-8"
+            type="text"
             name="title"
             value={jobData.title}
             onChange={handleChange}
@@ -66,9 +75,9 @@ export default function JobAdd() {
           <br />
           <input
             className="w-1/2 rounded-xl px-5 py-2 mb-8"
-            type="number"
-            name="budget"
-            value={jobData.budget}
+            type="text"
+            name="location"
+            value={jobData.location}
             onChange={handleChange}
             placeholder="Budget"
             required
@@ -76,9 +85,9 @@ export default function JobAdd() {
           <br />
           <input
             className="w-1/2 rounded-xl px-5 py-2 mb-8"
-            type="text"
-            name="duration"
-            value={jobData.duration}
+            type="number"
+            name="salary"
+            value={jobData.salary}
             onChange={handleChange}
             placeholder="Duration"
             required
