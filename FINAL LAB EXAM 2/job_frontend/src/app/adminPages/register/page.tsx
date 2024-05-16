@@ -2,6 +2,7 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import AdminPages from "../page";
 export default function AddUser() {
   const router = useRouter();
   const [state, setState] = useState({
@@ -51,6 +52,8 @@ export default function AddUser() {
     //     </form>
     // </main>
 
+    <>
+    <AdminPages/>
     <main className="flex min-h-screen flex-col justify-center items-center p-24 container mx-auto px-1 lg:px-20 md:px-10">
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div>
@@ -115,6 +118,6 @@ export default function AddUser() {
           </div>
           <button type="submit">Submit</button>
         </form>
-    </main>
+    </main></>
   );
 }

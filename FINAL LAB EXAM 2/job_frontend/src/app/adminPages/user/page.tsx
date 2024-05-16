@@ -1,6 +1,8 @@
-"use client"
+"use client";
 import axios from "axios";
+import Link from "next/link";
 import { useEffect, useState } from "react";
+import AdminPages from "../page";
 
 export default function UserList() {
   const [users, setUsers] = useState<any[]>([]);
@@ -47,6 +49,8 @@ export default function UserList() {
   };
 
   return (
+    <>
+      <AdminPages />
       <main className="flex min-h-screen flex-col justify-between p-24 container mx-auto px-1 lg:px-20 md:px-10">
         <div>
           <h1 className="text-3xl font-bold mb-8">User List</h1>
@@ -59,20 +63,38 @@ export default function UserList() {
                   <tr className="bg-gray-200">
                     <th className="border border-gray-300 px-4 py-2">ID</th>
                     <th className="border border-gray-300 px-4 py-2">Name</th>
-                    <th className="border border-gray-300 px-4 py-2">Username</th>
-                    <th className="border border-gray-300 px-4 py-2">Company name</th>
-                    <th className="border border-gray-300 px-4 py-2">Contact</th>
-                    <th className="border border-gray-300 px-4 py-2">Actions</th>
+                    <th className="border border-gray-300 px-4 py-2">
+                      Username
+                    </th>
+                    <th className="border border-gray-300 px-4 py-2">
+                      Company name
+                    </th>
+                    <th className="border border-gray-300 px-4 py-2">
+                      Contact
+                    </th>
+                    <th className="border border-gray-300 px-4 py-2">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {users.map((user) => (
                     <tr key={user.id} className="bg-white">
-                      <td className="border border-gray-300 px-4 py-2">{user.id}</td>
-                      <td className="border border-gray-300 px-4 py-2">{user.name}</td>
-                      <td className="border border-gray-300 px-4 py-2">{user.username}</td>
-                      <td className="border border-gray-300 px-4 py-2">{user.companyName}</td>
-                      <td className="border border-gray-300 px-4 py-2">{user.contact}</td>
+                      <td className="border border-gray-300 px-4 py-2">
+                        {user.id}
+                      </td>
+                      <td className="border border-gray-300 px-4 py-2">
+                        {user.name}
+                      </td>
+                      <td className="border border-gray-300 px-4 py-2">
+                        {user.username}
+                      </td>
+                      <td className="border border-gray-300 px-4 py-2">
+                        {user.companyName}
+                      </td>
+                      <td className="border border-gray-300 px-4 py-2">
+                        {user.contact}
+                      </td>
                       <td className="border border-gray-300 px-4 py-2">
                         <button
                           className=""
@@ -80,6 +102,20 @@ export default function UserList() {
                         >
                           Delete
                         </button>
+                        <br />
+                        <Link
+                          href={{
+                            pathname: "/adminPages/user/edit",
+                            query: {
+                              id: user.id,
+                              name:user.name,
+                              company:user.company,
+                              contact: user.contact
+                            },
+                          }}
+                        >
+                          Edit
+                        </Link>
                       </td>
                     </tr>
                   ))}
@@ -89,5 +125,6 @@ export default function UserList() {
           )}
         </div>
       </main>
+    </>
   );
 }
